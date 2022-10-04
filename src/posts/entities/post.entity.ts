@@ -12,5 +12,3 @@ export class Post {
     @Column()
     public content: string
 }
-
-export default Post
