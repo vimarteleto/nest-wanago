@@ -21,7 +21,6 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    console.log(id)
     const post = await this.repository.findOneBy({id: id})
     if (post) {
       return post
