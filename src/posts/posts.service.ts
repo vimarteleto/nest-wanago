@@ -1,5 +1,6 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import Post from './entities/post.entity';
@@ -7,7 +8,7 @@ import Post from './entities/post.entity';
 @Injectable()
 export class PostsService {
 
-  constructor(@InjectRepository(Post) private repository) {}
+  constructor(@InjectRepository(Post) private repository: Repository<Post>) {}
 
   async create(createPostDto: CreatePostDto) {
     const post = await this.repository.create(createPostDto)
@@ -20,7 +21,8 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    const post = await this.repository.findOne(id)
+    console.log(id)
+    const post = await this.repository.findOneBy({id: id})
     if (post) {
       return post
     }
@@ -30,7 +32,7 @@ export class PostsService {
 
   async update(id: number, updatePostDto: UpdatePostDto) {
     await this.repository.update(id, updatePostDto)
-    const post = await this.repository.findOne(id)
+    const post = await this.repository.findOneBy({id: id})
     if (post) {
       return post
     }
